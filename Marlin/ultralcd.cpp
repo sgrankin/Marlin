@@ -1213,27 +1213,27 @@ void lcd_update()
     {
 #ifdef ULTIPANEL
 		#ifdef REPRAPWORLD_KEYPAD
-        	if (REPRAPWORLD_KEYPAD_MOVE_Z_UP) {
-        		reprapworld_keypad_move_z_up();
-        	}
-        	if (REPRAPWORLD_KEYPAD_MOVE_Z_DOWN) {
-        		reprapworld_keypad_move_z_down();
-        	}
-        	if (REPRAPWORLD_KEYPAD_MOVE_X_LEFT) {
-        		reprapworld_keypad_move_x_left();
-        	}
-        	if (REPRAPWORLD_KEYPAD_MOVE_X_RIGHT) {
-        		reprapworld_keypad_move_x_right();
-        	}
-        	if (REPRAPWORLD_KEYPAD_MOVE_Y_DOWN) {
-        		reprapworld_keypad_move_y_down();
-        	}
-        	if (REPRAPWORLD_KEYPAD_MOVE_Y_UP) {
-        		reprapworld_keypad_move_y_up();
-        	}
-        	if (REPRAPWORLD_KEYPAD_MOVE_HOME) {
-        		reprapworld_keypad_move_home();
-        	}
+		if (REPRAPWORLD_KEYPAD_MOVE_Z_UP) {
+			reprapworld_keypad_move_z_up();
+		}
+		if (REPRAPWORLD_KEYPAD_MOVE_Z_DOWN) {
+			reprapworld_keypad_move_z_down();
+		}
+		if (REPRAPWORLD_KEYPAD_MOVE_X_LEFT) {
+			reprapworld_keypad_move_x_left();
+		}
+		if (REPRAPWORLD_KEYPAD_MOVE_X_RIGHT) {
+			reprapworld_keypad_move_x_right();
+		}
+		if (REPRAPWORLD_KEYPAD_MOVE_Y_DOWN) {
+			reprapworld_keypad_move_y_down();
+		}
+		if (REPRAPWORLD_KEYPAD_MOVE_Y_UP) {
+			reprapworld_keypad_move_y_up();
+		}
+		if (REPRAPWORLD_KEYPAD_MOVE_HOME) {
+			reprapworld_keypad_move_home();
+		}
 		#endif
         if (abs(encoderDiff) >= ENCODER_PULSES_PER_STEP)
         {
@@ -1345,6 +1345,7 @@ void lcd_setcontrast(uint8_t value)
 /* Warning: This function is called from interrupt context */
 void lcd_buttons_update()
 {
+	//WRITE(LCD_signal, HIGH); //added by Josh to test the LCD button update frequency
 #ifdef NEWPANEL
     uint8_t newbutton=0;
     if(READ(BTN_EN1)==0)  newbutton|=EN_A;
@@ -1422,6 +1423,7 @@ void lcd_buttons_update()
         }
     }
     lastEncoderBits = enc;
+	//WRITE(LCD_signal, LOW); //added by Josh to test the LCD button update frequency
 }
 
 bool lcd_detected(void)
@@ -1534,7 +1536,7 @@ char *ftostr43(const float &x)
 char *ftostr12ns(const float &x)
 {
   long xx=x*100;
-  
+
   xx=abs(xx);
   conv[0]=(xx/100)%10+'0';
   conv[1]='.';
