@@ -16,21 +16,27 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
+#include "../../inc/MarlinConfig.h"
+
+#if HAS_STATUS_MESSAGE
+
 #include "../gcode.h"
-#include "../../lcd/ultralcd.h"
+#include "../../lcd/marlinui.h"
 
 /**
  * M117: Set LCD Status Message
  */
 void GcodeSuite::M117() {
 
-  if (parser.string_arg && parser.string_arg[0])
-    ui.set_status(parser.string_arg);
+  if (parser.has_string())
+    ui.set_status_no_expire(parser.string_arg);
   else
     ui.reset_status();
 
 }
+
+#endif // HAS_STATUS_MESSAGE

@@ -41,7 +41,7 @@
  *
  */
 /*
- * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ * Support and FAQ: visit <a href="https://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef CONF_CLOCK_H_INCLUDED
@@ -95,6 +95,5 @@
 // - USB clock divider: 1 (not divided)
 // - UPLL frequency: 480MHz
 // - USB clock: 480 / 1 = 480MHz
-
 
 #endif /* CONF_CLOCK_H_INCLUDED */

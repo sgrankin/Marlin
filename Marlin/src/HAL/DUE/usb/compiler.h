@@ -41,7 +41,7 @@
  *
  */
 /*
- * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ * Support and FAQ: visit <a href="https://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef UTILS_COMPILER_H
@@ -142,7 +142,6 @@
  */
 #define COMPILER_PACK_RESET()          COMPILER_PRAGMA(pack())
 
-
 /**
  * \brief Set aligned boundary.
  */
@@ -173,11 +172,11 @@
 #   define __always_inline   __forceinline
 #elif (defined __GNUC__)
 #ifdef __always_inline
-#	undef __always_inline
+# undef __always_inline
 #endif
-#	define __always_inline   inline __attribute__((__always_inline__))
+# define __always_inline   inline __attribute__((__always_inline__))
 #elif (defined __ICCARM__)
-#	define __always_inline   _Pragma("inline=forced")
+# define __always_inline   _Pragma("inline=forced")
 #endif
 
 /**
@@ -188,11 +187,11 @@
  * heuristics and not inline the function.
  */
 #ifdef __CC_ARM
-#   define __no_inline   __attribute__((noinline))
+# define __no_inline   __attribute__((noinline))
 #elif (defined __GNUC__)
-#	define __no_inline   __attribute__((__noinline__))
+# define __no_inline   __attribute__((__noinline__))
 #elif (defined __ICCARM__)
-#	define __no_inline   _Pragma("inline=never")
+# define __no_inline   _Pragma("inline=never")
 #endif
 
 /*! \brief This macro is used to test fatal errors.
@@ -211,9 +210,9 @@
 #  else
 #undef TEST_SUITE_DEFINE_ASSERT_MACRO
 #    define Assert(expr) \
-	{\
-		if (!(expr)) while (true);\
-	}
+  {\
+    if (!(expr)) while (true);\
+  }
 #  endif
 #else
 #  define Assert(expr) ((void) 0)
@@ -283,14 +282,12 @@ typedef double                  F64;  //!< 64-bit floating-point number.
 typedef uint32_t                iram_size_t;
 //! @}
 
-
 /*! \name Status Types
  */
 //! @{
 typedef bool                Status_bool_t;  //!< Boolean status.
 typedef U8                  Status_t;       //!< 8-bit-coded status.
 //! @}
-
 
 /*! \name Aliasing Aggregate Types
  */
@@ -462,7 +459,6 @@ typedef struct
 #endif
 //! @}
 
-
 #ifndef __ASSEMBLY__ // not for assembling.
 
 //! \name Optimization Control
@@ -581,7 +577,6 @@ typedef struct
 
 //! @}
 
-
 /*! \name Zero-Bit Counting
  *
  * Under GCC, __builtin_clz and __builtin_ctz behave like macros when
@@ -609,37 +604,37 @@ typedef struct
 #   define clz(u)              ((u) ? __CLZ(u) : 32)
 #else
 #   define clz(u)              (((u) == 0)          ? 32 : \
-                                ((u) & (1ul << 31)) ?  0 : \
-                                ((u) & (1ul << 30)) ?  1 : \
-                                ((u) & (1ul << 29)) ?  2 : \
-                                ((u) & (1ul << 28)) ?  3 : \
-                                ((u) & (1ul << 27)) ?  4 : \
-                                ((u) & (1ul << 26)) ?  5 : \
-                                ((u) & (1ul << 25)) ?  6 : \
-                                ((u) & (1ul << 24)) ?  7 : \
-                                ((u) & (1ul << 23)) ?  8 : \
-                                ((u) & (1ul << 22)) ?  9 : \
-                                ((u) & (1ul << 21)) ? 10 : \
-                                ((u) & (1ul << 20)) ? 11 : \
-                                ((u) & (1ul << 19)) ? 12 : \
-                                ((u) & (1ul << 18)) ? 13 : \
-                                ((u) & (1ul << 17)) ? 14 : \
-                                ((u) & (1ul << 16)) ? 15 : \
-                                ((u) & (1ul << 15)) ? 16 : \
-                                ((u) & (1ul << 14)) ? 17 : \
-                                ((u) & (1ul << 13)) ? 18 : \
-                                ((u) & (1ul << 12)) ? 19 : \
-                                ((u) & (1ul << 11)) ? 20 : \
-                                ((u) & (1ul << 10)) ? 21 : \
-                                ((u) & (1ul <<  9)) ? 22 : \
-                                ((u) & (1ul <<  8)) ? 23 : \
-                                ((u) & (1ul <<  7)) ? 24 : \
-                                ((u) & (1ul <<  6)) ? 25 : \
-                                ((u) & (1ul <<  5)) ? 26 : \
-                                ((u) & (1ul <<  4)) ? 27 : \
-                                ((u) & (1ul <<  3)) ? 28 : \
-                                ((u) & (1ul <<  2)) ? 29 : \
-                                ((u) & (1ul <<  1)) ? 30 : \
+                                ((u) & (1UL << 31)) ?  0 : \
+                                ((u) & (1UL << 30)) ?  1 : \
+                                ((u) & (1UL << 29)) ?  2 : \
+                                ((u) & (1UL << 28)) ?  3 : \
+                                ((u) & (1UL << 27)) ?  4 : \
+                                ((u) & (1UL << 26)) ?  5 : \
+                                ((u) & (1UL << 25)) ?  6 : \
+                                ((u) & (1UL << 24)) ?  7 : \
+                                ((u) & (1UL << 23)) ?  8 : \
+                                ((u) & (1UL << 22)) ?  9 : \
+                                ((u) & (1UL << 21)) ? 10 : \
+                                ((u) & (1UL << 20)) ? 11 : \
+                                ((u) & (1UL << 19)) ? 12 : \
+                                ((u) & (1UL << 18)) ? 13 : \
+                                ((u) & (1UL << 17)) ? 14 : \
+                                ((u) & (1UL << 16)) ? 15 : \
+                                ((u) & (1UL << 15)) ? 16 : \
+                                ((u) & (1UL << 14)) ? 17 : \
+                                ((u) & (1UL << 13)) ? 18 : \
+                                ((u) & (1UL << 12)) ? 19 : \
+                                ((u) & (1UL << 11)) ? 20 : \
+                                ((u) & (1UL << 10)) ? 21 : \
+                                ((u) & (1UL <<  9)) ? 22 : \
+                                ((u) & (1UL <<  8)) ? 23 : \
+                                ((u) & (1UL <<  7)) ? 24 : \
+                                ((u) & (1UL <<  6)) ? 25 : \
+                                ((u) & (1UL <<  5)) ? 26 : \
+                                ((u) & (1UL <<  4)) ? 27 : \
+                                ((u) & (1UL <<  3)) ? 28 : \
+                                ((u) & (1UL <<  2)) ? 29 : \
+                                ((u) & (1UL <<  1)) ? 30 : \
                                 31)
 #endif
 #endif
@@ -654,44 +649,43 @@ typedef struct
 #if (defined __GNUC__) || (defined __CC_ARM)
 #   define ctz(u)              ((u) ? __builtin_ctz(u) : 32)
 #else
-#   define ctz(u)              ((u) & (1ul <<  0) ?  0 : \
-                                (u) & (1ul <<  1) ?  1 : \
-                                (u) & (1ul <<  2) ?  2 : \
-                                (u) & (1ul <<  3) ?  3 : \
-                                (u) & (1ul <<  4) ?  4 : \
-                                (u) & (1ul <<  5) ?  5 : \
-                                (u) & (1ul <<  6) ?  6 : \
-                                (u) & (1ul <<  7) ?  7 : \
-                                (u) & (1ul <<  8) ?  8 : \
-                                (u) & (1ul <<  9) ?  9 : \
-                                (u) & (1ul << 10) ? 10 : \
-                                (u) & (1ul << 11) ? 11 : \
-                                (u) & (1ul << 12) ? 12 : \
-                                (u) & (1ul << 13) ? 13 : \
-                                (u) & (1ul << 14) ? 14 : \
-                                (u) & (1ul << 15) ? 15 : \
-                                (u) & (1ul << 16) ? 16 : \
-                                (u) & (1ul << 17) ? 17 : \
-                                (u) & (1ul << 18) ? 18 : \
-                                (u) & (1ul << 19) ? 19 : \
-                                (u) & (1ul << 20) ? 20 : \
-                                (u) & (1ul << 21) ? 21 : \
-                                (u) & (1ul << 22) ? 22 : \
-                                (u) & (1ul << 23) ? 23 : \
-                                (u) & (1ul << 24) ? 24 : \
-                                (u) & (1ul << 25) ? 25 : \
-                                (u) & (1ul << 26) ? 26 : \
-                                (u) & (1ul << 27) ? 27 : \
-                                (u) & (1ul << 28) ? 28 : \
-                                (u) & (1ul << 29) ? 29 : \
-                                (u) & (1ul << 30) ? 30 : \
-                                (u) & (1ul << 31) ? 31 : \
+#   define ctz(u)              ((u) & (1UL <<  0) ?  0 : \
+                                (u) & (1UL <<  1) ?  1 : \
+                                (u) & (1UL <<  2) ?  2 : \
+                                (u) & (1UL <<  3) ?  3 : \
+                                (u) & (1UL <<  4) ?  4 : \
+                                (u) & (1UL <<  5) ?  5 : \
+                                (u) & (1UL <<  6) ?  6 : \
+                                (u) & (1UL <<  7) ?  7 : \
+                                (u) & (1UL <<  8) ?  8 : \
+                                (u) & (1UL <<  9) ?  9 : \
+                                (u) & (1UL << 10) ? 10 : \
+                                (u) & (1UL << 11) ? 11 : \
+                                (u) & (1UL << 12) ? 12 : \
+                                (u) & (1UL << 13) ? 13 : \
+                                (u) & (1UL << 14) ? 14 : \
+                                (u) & (1UL << 15) ? 15 : \
+                                (u) & (1UL << 16) ? 16 : \
+                                (u) & (1UL << 17) ? 17 : \
+                                (u) & (1UL << 18) ? 18 : \
+                                (u) & (1UL << 19) ? 19 : \
+                                (u) & (1UL << 20) ? 20 : \
+                                (u) & (1UL << 21) ? 21 : \
+                                (u) & (1UL << 22) ? 22 : \
+                                (u) & (1UL << 23) ? 23 : \
+                                (u) & (1UL << 24) ? 24 : \
+                                (u) & (1UL << 25) ? 25 : \
+                                (u) & (1UL << 26) ? 26 : \
+                                (u) & (1UL << 27) ? 27 : \
+                                (u) & (1UL << 28) ? 28 : \
+                                (u) & (1UL << 29) ? 29 : \
+                                (u) & (1UL << 30) ? 30 : \
+                                (u) & (1UL << 31) ? 31 : \
                                 32)
 #endif
 #endif
 
 //! @}
-
 
 /*! \name Bit Reversing
  */
@@ -731,7 +725,6 @@ typedef struct
                                    ((U64)bit_reverse32((U64)(u64)) << 32)))
 
 //! @}
-
 
 /*! \name Alignment
  */
@@ -797,7 +790,6 @@ typedef struct
  * \note It may be used as a long jump opcode in some special cases.
  */
 #define Long_call(addr)                   ((*(void (*)(void))(addr))())
-
 
 /*! \name MCU Endianism Handling
  * ARM is MCU little endianism.
@@ -867,7 +859,6 @@ typedef struct
 #define  BE32_TO_CPU(x) swap32(x)
 #define  CPU_TO_BE32(x) swap32(x)
 //! @}
-
 
 /*! \name Endianism Conversion
  *
@@ -955,7 +946,6 @@ typedef struct
 
 //! @}
 
-
 /*! \name Target Abstraction
  */
 //! @{
@@ -996,7 +986,6 @@ typedef U8                  Byte;       //!< 8-bit unsigned integer.
 #define div_ceil(a, b)      (((a) + (b) - 1) / (b))
 
 #endif  // #ifndef __ASSEMBLY__
-
 
 #ifdef __ICCARM__
 #define SHORTENUM           __packed
@@ -1059,7 +1048,7 @@ static inline void convert_64_bit_to_byte_array(uint64_t value, uint8_t *data)
     while (val_index < 8)
     {
         data[val_index++] = value & 0xFF;
-        value = value >> 8;
+        value >>= 8;
     }
 }
 
@@ -1106,17 +1095,16 @@ static inline uint16_t convert_byte_array_to_16_bit(uint8_t *data)
 /* Converts a 8 Byte array into a 32-Bit value */
 static inline uint32_t convert_byte_array_to_32_bit(uint8_t *data)
 {
-	union
-	{
-		uint32_t u32;
-		uint8_t u8[8];
-	}long_addr;
-	uint8_t index;
-	for (index = 0; index < 4; index++)
-	{
-		long_addr.u8[index] = *data++;
-	}
-	return long_addr.u32;
+  union
+  {
+    uint32_t u32;
+    uint8_t u8[8];
+  }long_addr;
+  uint8_t index;
+  for (index = 0; index < 4; index++) {
+    long_addr.u8[index] = *data++;
+  }
+  return long_addr.u32;
 }
 
 /**

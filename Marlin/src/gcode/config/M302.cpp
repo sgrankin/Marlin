@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -25,6 +25,11 @@
 #if ENABLED(PREVENT_COLD_EXTRUSION)
 
 #include "../gcode.h"
+
+#if ENABLED(EXTENSIBLE_UI)
+  #include "../../lcd/extui/ui_api.h"
+#endif
+
 #include "../../module/temperature.h"
 
 /**
@@ -37,7 +42,7 @@
  *
  *       M302         ; report current cold extrusion state
  *       M302 P0      ; enable cold extrusion checking
- *       M302 P1      ; disables cold extrusion checking
+ *       M302 P1      ; disable cold extrusion checking
  *       M302 S0      ; always allow extrusion (disables checking)
  *       M302 S170    ; only allow extrusion above 170
  *       M302 S170 P1 ; set min extrude temp to 170 but leave disabled
@@ -46,17 +51,17 @@ void GcodeSuite::M302() {
   const bool seen_S = parser.seen('S');
   if (seen_S) {
     thermalManager.extrude_min_temp = parser.value_celsius();
-    thermalManager.allow_cold_extrude = (thermalManager.extrude_min_temp == 0);
+    TERN_(EXTENSIBLE_UI, ExtUI::onSetMinExtrusionTemp(thermalManager.extrude_min_temp));
   }
 
-  if (parser.seen('P'))
-    thermalManager.allow_cold_extrude = (thermalManager.extrude_min_temp == 0) || parser.value_bool();
-  else if (!seen_S) {
+  const bool seen_P = parser.seen('P');
+  if (seen_P || seen_S) {
+    thermalManager.allow_cold_extrude = (thermalManager.extrude_min_temp == 0) || (seen_P && parser.value_bool());
+  }
+  else {
     // Report current state
     SERIAL_ECHO_START();
-    SERIAL_ECHOPGM("Cold extrudes are ");
-    serialprintPGM(thermalManager.allow_cold_extrude ? PSTR("en") : PSTR("dis"));
-    SERIAL_ECHOLNPAIR("abled (min temp ", thermalManager.extrude_min_temp, "C)");
+    SERIAL_ECHOLN(F("Cold extrudes are "), thermalManager.allow_cold_extrude ? F("en") : F("dis"), F("abled (min temp "), thermalManager.extrude_min_temp, F("C)"));
   }
 }
 

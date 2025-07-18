@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -28,7 +28,7 @@
  */
 
 #ifndef MASK
-  #define MASK(PIN) (1 << PIN)
+  #define MASK(PIN) _BV(PIN)
 #endif
 
 #define GPIO_BITBAND_ADDR(reg, bit) (((uint32_t)&(reg) - 0x40000000) * 32 + (bit) * 4 + 0x42000000)
@@ -39,7 +39,7 @@
  *
  * Now you can simply SET_OUTPUT(PIN); WRITE(PIN, HIGH); WRITE(PIN, LOW);
  *
- * Why double up on these macros? see http://gcc.gnu.org/onlinedocs/cpp/Stringification.html
+ * Why double up on these macros? see https://gcc.gnu.org/onlinedocs/gcc-4.8.5/cpp/Stringification.html
  */
 
 #define _READ(P) bool(CORE_PIN ## P ## _PINREG & CORE_PIN ## P ## _BITMASK)
@@ -53,17 +53,17 @@
 
 #define _SET_INPUT(P) do{ \
   CORE_PIN ## P ## _CONFIG = PORT_PCR_MUX(1); \
-  GPIO_BITBAND(CORE_PIN ## P ## _DDRREG , CORE_PIN ## P ## _BIT) = 0; \
+  GPIO_BITBAND(CORE_PIN ## P ## _DDRREG, CORE_PIN ## P ## _BIT) = 0; \
 }while(0)
 
 #define _SET_OUTPUT(P) do{ \
   CORE_PIN ## P ## _CONFIG = PORT_PCR_MUX(1)|PORT_PCR_SRE|PORT_PCR_DSE; \
-  GPIO_BITBAND(CORE_PIN ## P ## _DDRREG , CORE_PIN ## P ## _BIT) = 1; \
+  GPIO_BITBAND(CORE_PIN ## P ## _DDRREG, CORE_PIN ## P ## _BIT) = 1; \
 }while(0)
 
 #define _SET_INPUT_PULLUP(P) do{ \
   CORE_PIN ## P ## _CONFIG = PORT_PCR_MUX(1) | PORT_PCR_PE | PORT_PCR_PS; \
-  GPIO_BITBAND(CORE_PIN ## P ## _DDRREG , CORE_PIN ## P ## _BIT) = 0; \
+  GPIO_BITBAND(CORE_PIN ## P ## _DDRREG, CORE_PIN ## P ## _BIT) = 0; \
 }while(0)
 
 #define _IS_INPUT(P)    ((CORE_PIN ## P ## _DDRREG & CORE_PIN ## P ## _BITMASK) == 0)

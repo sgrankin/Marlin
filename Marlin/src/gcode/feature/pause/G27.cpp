@@ -16,10 +16,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
 
 #include "../../../inc/MarlinConfig.h"
 
@@ -28,14 +27,25 @@
 #include "../../gcode.h"
 #include "../../../libs/nozzle.h"
 #include "../../../module/motion.h"
+#if ENABLED(SOVOL_SV06_RTS)
+  #include "../../../lcd/sovol_rts/sovol_rts.h"
+#endif
 
 /**
- * G27: Park the nozzle
+ * G27: Park the nozzle according with the given style
+ *
+ *  P<style> - Parking style:
+ *             0 = (Default) Relative raise by NOZZLE_PARK_Z_RAISE_MIN (>= NOZZLE_PARK_POINT.z) before XY parking.
+ *             1 = Absolute move to NOZZLE_PARK_POINT.z before XY parking. (USE WITH CAUTION!)
+ *             2 = Relative raise by NOZZLE_PARK_POINT.z before XY parking.
+ *             3 = Relative raise by NOZZLE_PARK_Z_RAISE_MIN, skip XY parking.
+ *             4 = No Z raise. Just XY parking.
  */
 void GcodeSuite::G27() {
   // Don't allow nozzle parking without homing first
-  if (axis_unhomed_error()) return;
+  if (homing_needed_error()) return;
   nozzle.park(parser.ushortval('P'));
+  TERN_(SOVOL_SV06_RTS, RTS_MoveAxisHoming());
 }
 
 #endif // NOZZLE_PARK_FEATURE

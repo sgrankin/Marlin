@@ -16,21 +16,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
 
 /**
  * Geeetech GT2560 Revision A+ board pin assignments
+ * Schematic: https://www.geeetech.com/wiki/images/d/d3/Hardware_GT2560_RevA%2B.pdf
+ * ATmega2560
  */
 
 #define BOARD_INFO_NAME "GT2560 Rev.A+"
 
-#include "pins_GT2560_REV_A.h"
+#define SERVO0_PIN                            11
 
-#if ENABLED(BLTOUCH)
-  #define SERVO0_PIN  11
-#else
-  #define SERVO0_PIN  32
-#endif
+#include "pins_GT2560_REV_A.h"

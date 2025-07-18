@@ -41,7 +41,7 @@
  *
  */
 /*
- * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ * Support and FAQ: visit <a href="https://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef _MREPEAT_H_
@@ -56,7 +56,6 @@
  */
 
 #include "preprocessor.h"
-
 
 //! Maximal number of repetitions supported by MREPEAT.
 #define MREPEAT_LIMIT   256

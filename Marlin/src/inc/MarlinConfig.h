@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -25,22 +25,26 @@
 // Prefix header for all Marlin sources
 //
 
-#include "MarlinConfigPre.h"
+#include "Conditionals-6-type.h"
 
-#include "../HAL/HAL.h"
+#ifndef __MARLIN_DEPS__
 
-#include "../pins/pins.h"
-#include HAL_PATH(../HAL, spi_pins.h)
+  #include HAL_PATH(.., inc/Conditionals_type.h)
 
-#include "Conditionals_post.h"
-#include HAL_PATH(../HAL, inc/Conditionals_post.h)
+  #include "Changes.h"
 
-#include "../core/types.h"  // Ahead of sanity-checks
+  // Include all core headers
+  #include "../core/language.h"
+  #include "../core/utility.h"
+  #include "../core/mstring.h"
+  #include "../core/serial.h"
+  #include "../core/endianness.h"
 
-#include "SanityCheck.h"
-#include HAL_PATH(../HAL, inc/SanityCheck.h)
+#endif
 
-// Include all core headers
-#include "../core/language.h"
-#include "../core/utility.h"
-#include "../core/serial.h"
+#include "../core/multi_language.h"
+
+#ifndef __MARLIN_DEPS__
+  #include "SanityCheck.h"
+  #include HAL_PATH(.., inc/SanityCheck.h)
+#endif

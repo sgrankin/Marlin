@@ -16,27 +16,20 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
 
 /**
  * Azteeg X5 GT pin assignments
+ * Schematic: https://panucattdevices.freshdesk.com/support/solutions/articles/1000244740-support-files
  */
 
-#ifndef MCU_LPC1769
-  #error "Oops! Make sure you have the LPC1769 environment selected in your IDE."
-#endif
+#include "env_validate.h"
 
 #define BOARD_INFO_NAME   "Azteeg X5 GT"
 #define BOARD_WEBSITE_URL "tinyurl.com/yx8tdqa3"
-
-//
-// EEPROM
-//
-#define FLASH_EEPROM_EMULATION
-//#define SDCARD_EEPROM_EMULATION
 
 //
 // Servos
@@ -106,15 +99,14 @@
 #define HEATER_BED_PIN                     P2_07
 #define HEATER_0_PIN                       P2_04
 #define HEATER_1_PIN                       P2_05
-#ifndef FAN_PIN
-  #define FAN_PIN                          P0_26
+#ifndef FAN0_PIN
+  #define FAN0_PIN                         P0_26
 #endif
 #define FAN1_PIN                           P1_22
 
 //
 // Display
 //
-
 #if ANY(VIKI2, miniVIKI)
   #define BEEPER_PIN                       P1_31
   #define DOGLCD_A0                        P2_06
@@ -125,7 +117,7 @@
   #define BTN_ENC                          P2_11
 
   #define SD_DETECT_PIN                    P1_18
-  #define SDSS                             P1_21
+  #define SD_SS_PIN                        P1_21
 
   #define STAT_LED_RED_PIN                 P1_19
   #define STAT_LED_BLUE_PIN                P1_20

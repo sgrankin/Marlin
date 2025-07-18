@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -28,7 +28,7 @@
 
 FilamentWidthSensor filwidth;
 
-bool FilamentWidthSensor::enabled; // = false;                          // (M405-M406) Filament Width Sensor ON/OFF.
+bool FilamentWidthSensor::enabled; // = false                           // (M405-M406) Filament Width Sensor ON/OFF.
 uint32_t FilamentWidthSensor::accum; // = 0                             // ADC accumulator
 uint16_t FilamentWidthSensor::raw; // = 0                               // Measured filament diameter - one extruder only
 float FilamentWidthSensor::nominal_mm = DEFAULT_NOMINAL_FILAMENT_DIA,   // (M104) Nominal filament width
@@ -42,7 +42,7 @@ int8_t FilamentWidthSensor::ratios[MAX_MEASUREMENT_DELAY + 1],          // Ring 
 
 void FilamentWidthSensor::init() {
   const int8_t ratio = sample_to_size_ratio();
-  LOOP_L_N(i, COUNT(ratios)) ratios[i] = ratio;
+  for (uint8_t i = 0; i < COUNT(ratios); ++i) ratios[i] = ratio;
   index_r = index_w = 0;
 }
 

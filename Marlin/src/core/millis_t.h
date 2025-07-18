@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -25,5 +25,12 @@
 
 typedef uint32_t millis_t;
 
-#define PENDING(NOW,SOON) ((int32_t)(NOW-(SOON))<0)
-#define ELAPSED(NOW,SOON) (!PENDING(NOW,SOON))
+#define SEC_TO_MS(N) millis_t((N)*1000UL)
+#define MIN_TO_MS(N) SEC_TO_MS((N)*60UL)
+#define MS_TO_SEC(N) millis_t((N)/1000UL)
+#define MS_TO_SEC_PRECISE(N) (float(N)/1000.0f)
+
+constexpr bool _PENDING(const millis_t now, const millis_t when) { return int32_t(when - now) > 0; }
+constexpr bool _PENDING(const millis_t now, const millis_t start, const millis_t interval) { return (now - start) < interval; }
+#define PENDING(V...)  _PENDING(V)
+#define ELAPSED(V...) !_PENDING(V)

@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -24,30 +24,26 @@
 #include "../../module/motion.h"
 
 /**
- * M220: Set speed percentage factor, aka "Feed Rate"
+ * M220: Set Feedrate Percentage
  *
- * Parameters
- *   S<percent> : Set the feed rate percentage factor
+ * Parameters:
+ *   None        Report the current speed percentage factor
+ *   S<percent>  Set the feed rate percentage factor
  *
- * Report the current speed percentage factor if no parameter is specified
- *
- * With PRUSA_MMU2...
- *   B : Flag to back up the current factor
- *   R : Flag to restore the last-saved factor
+ *   For MMU2 and MMU2S devices:
+ *     B<flag>  Back up the current factor
+ *     R<flag>  Restore the last-saved factor
  */
 void GcodeSuite::M220() {
+  if (!parser.seen_any()) {
+    SERIAL_ECHOLNPGM("FR:", feedrate_percentage, "%");
+    return;
+  }
 
-  #if ENABLED(PRUSA_MMU2)
-    static int16_t backup_feedrate_percentage = 100;
-    if (parser.seen('B')) backup_feedrate_percentage = feedrate_percentage;
-    if (parser.seen('R')) feedrate_percentage = backup_feedrate_percentage;
-  #endif
-
+  static int16_t backup_feedrate_percentage = 100;
+  const int16_t now_feedrate_perc = feedrate_percentage;
+  if (parser.seen_test('R')) feedrate_percentage = backup_feedrate_percentage;
+  if (parser.seen_test('B')) backup_feedrate_percentage = now_feedrate_perc;
   if (parser.seenval('S')) feedrate_percentage = parser.value_int();
 
-  if (!parser.seen_any()) {
-    SERIAL_ECHOPAIR("FR:", feedrate_percentage);
-    SERIAL_CHAR('%');
-    SERIAL_EOL();
-  }
 }

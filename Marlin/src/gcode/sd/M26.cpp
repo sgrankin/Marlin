@@ -16,23 +16,28 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
 #include "../../inc/MarlinConfig.h"
 
-#if ENABLED(SDSUPPORT)
+#if HAS_MEDIA
 
 #include "../gcode.h"
 #include "../../sd/cardreader.h"
 
 /**
- * M26: Set SD Card file index
+ * M26: Set Media File current index
+ *
+ * Set the next read position for the open file.
+ *
+ * Parameters:
+ *   S<pos>  Next file read position to set
  */
 void GcodeSuite::M26() {
   if (card.isMounted() && parser.seenval('S'))
     card.setIndex(parser.value_long());
 }
 
-#endif // SDSUPPORT
+#endif // HAS_MEDIA

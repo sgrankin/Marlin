@@ -16,19 +16,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
 
 /**
  * Einstart-S pin assignments
+ * ATmega2560, ATmega1280
  * PCB Silkscreen: 3DPrinterCon_v3.5
  */
 
-#if !defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)
-  #error "Oops! Select 'Arduino/Genuino Mega or Mega 2560' in 'Tools > Board.'"
-#endif
+#define ALLOW_MEGA1280
+#include "env_validate.h"
 
 #define BOARD_INFO_NAME "Einstart-S"
 
@@ -70,20 +70,16 @@
 #define HEATER_0_PIN                          83
 #define HEATER_BED_PIN                        38
 
-#define FAN_PIN                               82
+#define FAN0_PIN                              82
 
 //
 // Misc. Functions
 //
-#define SDSS                                  53
+#define SD_SS_PIN                             53
 #define LED_PIN                                4
 
-//////////////////////////
-// LCDs and Controllers //
-//////////////////////////
-
 //
-// LCD Display output pins
+// LCD / Controller
 //
 
 // Requires #define U8GLIB_SH1106_EINSTART in Configuration.h
@@ -102,9 +98,9 @@
 // LCD Display input pins
 //
 #define BTN_UP                                25
-#define BTN_DWN                               26
-#define BTN_LFT                               27
-#define BTN_RT                                28
+#define BTN_DOWN                              26
+#define BTN_LEFT                              27
+#define BTN_RIGHT                             28
 
 // 'OK' button
 #define BTN_ENC                               29

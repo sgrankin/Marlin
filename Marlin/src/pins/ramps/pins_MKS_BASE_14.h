@@ -16,29 +16,25 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
 
 /**
  * MKS BASE v1.4 with A4982 stepper drivers and digital micro-stepping
+ * ATmega2560
  */
 
 #if HOTENDS > 2 || E_STEPPERS > 2
-  #error "MKS BASE 1.4 only supports up to 2 hotends / E-steppers. Comment out this line to continue."
+  #error "MKS BASE 1.4 supports up to 2 hotends / E steppers."
 #endif
 
 #define BOARD_INFO_NAME "MKS BASE 1.4"
 #define MKS_BASE_VERSION                      14
 
-//
-// Heaters / Fans
-//
-#define FAN_PIN                                9  // PH6 ** Pin18 ** PWM9
-
 // Other Mods
-#define CASE_LIGHT_PIN                        11  // PB5 ** Pin24 ** PWM11
+
 #define SERVO3_PIN                            12  // PB6 ** Pin25 ** D12
 #define PS_ON_PIN                              2  // X+ // PE4 ** Pin6  ** PWM2       **MUST BE HARDWARE PWM
 #define FILWIDTH_PIN                          15  // Y+ // PJ0 ** Pin63 ** USART3_RX  **Pin should have a pullup!
@@ -47,14 +43,18 @@
 #ifndef RGB_LED_R_PIN
   #define RGB_LED_R_PIN                       50
 #endif
-#ifndef RGB_LED_R_PIN
+#ifndef RGB_LED_G_PIN
   #define RGB_LED_G_PIN                       51
 #endif
-#ifndef RGB_LED_R_PIN
+#ifndef RGB_LED_B_PIN
   #define RGB_LED_B_PIN                       52
 #endif
 
-#include "pins_MKS_BASE_common.h"
+#ifndef CASE_LIGHT_PIN
+  #define CASE_LIGHT_PIN                      11  // PB5 ** Pin24 ** PWM11
+#endif
+
+#include "pins_MKS_BASE_common.h" // ... RAMPS
 
 /*
   Available connectors on MKS BASE v1.4

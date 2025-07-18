@@ -16,39 +16,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
 
-#ifndef __MARLIN_FIRMWARE__
-#define __MARLIN_FIRMWARE__
-#endif
-
 //
 // Prefix header to acquire configurations
 //
-#include <stdint.h>
+#include "Conditionals-1-axes.h"
+#include "Conditionals-2-LCD.h"
+#include "Conditionals-3-etc.h"
+#include "Conditionals-4-adv.h"
 
-#include "../HAL/platforms.h"
-
-#include "../core/boards.h"
-#include "../core/macros.h"
-#include "../../Configuration.h"
-
-#ifdef CUSTOM_VERSION_FILE
-  #if __has_include(STRINGIFY(../../CUSTOM_VERSION_FILE))
-    #include STRINGIFY(../../CUSTOM_VERSION_FILE)
-  #endif
+#ifndef __MARLIN_DEPS__
+  #include HAL_PATH(.., inc/Conditionals_adv.h)
 #endif
-
-#include "Version.h"
-
-#include "Conditionals_LCD.h"
-#include HAL_PATH(../HAL, inc/Conditionals_LCD.h)
-
-#include "../core/drivers.h"
-#include "../../Configuration_adv.h"
-
-#include "Conditionals_adv.h"
-#include HAL_PATH(../HAL, inc/Conditionals_adv.h)

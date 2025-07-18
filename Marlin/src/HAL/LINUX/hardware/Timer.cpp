@@ -16,10 +16,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
 #ifdef __PLAT_LINUX__
 
 #include "Timer.h"
@@ -38,7 +37,10 @@ Timer::Timer() {
 }
 
 Timer::~Timer() {
-  timer_delete(timerid);
+  if (timerid != 0) {
+    timer_delete(timerid);
+    timerid = 0;
+  }
 }
 
 void Timer::init(uint32_t sig_id, uint32_t sim_freq, callback_fn* fn) {

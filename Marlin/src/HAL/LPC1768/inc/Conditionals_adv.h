@@ -16,7 +16,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
+
+#if DISABLED(NO_SD_HOST_DRIVE)
+  #define HAS_SD_HOST_DRIVE 1
+#endif
+
+#ifndef RX_BUFFER_SIZE
+  #define RX_BUFFER_SIZE 128
+#endif
+#ifndef TX_BUFFER_SIZE
+  #define TX_BUFFER_SIZE 32
+#endif

@@ -41,7 +41,7 @@
  *
  */
 /*
- * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ * Support and FAQ: visit <a href="https://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef _PREPROCESSOR_H_
@@ -50,6 +50,5 @@
 #include "tpaste.h"
 #include "stringz.h"
 #include "mrepeat.h"
-
 
 #endif  // _PREPROCESSOR_H_

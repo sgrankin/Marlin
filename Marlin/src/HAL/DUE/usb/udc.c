@@ -41,7 +41,7 @@
  *
  */
 /*
- * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ * Support and FAQ: visit <a href="https://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifdef ARDUINO_ARCH_SAM
@@ -82,7 +82,6 @@ static udc_config_speed_t UDC_DESC_STORAGE *udc_ptr_conf;
 static usb_iface_desc_t UDC_DESC_STORAGE *udc_ptr_iface;
 
 //! @}
-
 
 //! \name Internal structure to store the USB device main strings
 //! @{

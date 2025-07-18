@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -56,7 +56,7 @@
  *
  * Now you can simply SET_OUTPUT(STEP); WRITE(STEP, HIGH); WRITE(STEP, LOW);
  *
- * Why double up on these macros? see http://gcc.gnu.org/onlinedocs/cpp/Stringification.html
+ * Why double up on these macros? see https://gcc.gnu.org/onlinedocs/gcc-4.8.5/cpp/Stringification.html
  */
 
 /// Read a pin
@@ -66,7 +66,7 @@
 #define _WRITE(IO,V)          WRITE_PIN(IO,V)
 
 /// toggle a pin
-#define _TOGGLE(IO)           _WRITE(IO, !READ(IO))
+#define _TOGGLE(IO)           LPC176x::gpio_toggle(IO)
 
 /// set pin as input
 #define _SET_INPUT(IO)        SET_DIR_INPUT(IO)

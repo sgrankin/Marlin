@@ -41,7 +41,7 @@
  *
  */
 /*
- * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
+ * Support and FAQ: visit <a href="https://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef _CONF_ACCESS_H_
@@ -81,7 +81,6 @@
 #define LUN_0_NAME                              "\"SD/MMC Card\""
 //! @}
 
-
 /*! \name Actions Associated with Memory Accesses
  *
  * Write here the action to associate with each memory access.
@@ -111,6 +110,5 @@
 //! @{
 #define GLOBAL_WR_PROTECT    false   //!< Management of a global write protection.
 //! @}
-
 
 #endif // _CONF_ACCESS_H_

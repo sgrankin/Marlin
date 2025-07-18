@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -24,5 +24,5 @@
 #include <stdint.h>
 
 void menu_mmu2();
-void mmu2_M600();
+void mmu2_M600(const bool automatic=false);
 uint8_t mmu2_choose_filament();

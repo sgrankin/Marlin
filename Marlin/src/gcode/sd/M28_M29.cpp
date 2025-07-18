@@ -16,23 +16,29 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
 #include "../../inc/MarlinConfig.h"
 
-#if ENABLED(SDSUPPORT)
+#if HAS_MEDIA
 
 #include "../gcode.h"
 #include "../../sd/cardreader.h"
 
-#if NUM_SERIAL > 1
+#if HAS_MULTI_SERIAL
   #include "../queue.h"
 #endif
 
 /**
  * M28: Start SD Write
+ *
+ * Parameters:
+ *   <filename>  File name to write
+ *
+ *   With BINARY_FILE_TRANSFER:
+ *     B1  Set an optimized binary file transfer mode
  */
 void GcodeSuite::M28() {
 
@@ -49,9 +55,7 @@ void GcodeSuite::M28() {
     // Binary transfer mode
     if ((card.flag.binary_mode = binary_mode)) {
       SERIAL_ECHO_MSG("Switching to Binary Protocol");
-      #if NUM_SERIAL > 1
-        card.transfer_port_index = queue.port[queue.index_r];
-      #endif
+      TERN_(HAS_MULTI_SERIAL, card.transfer_port_index = queue.ring_buffer.command_port().index);
     }
     else
       card.openFileWrite(p);
@@ -71,4 +75,4 @@ void GcodeSuite::M29() {
   card.flag.saving = false;
 }
 
-#endif // SDSUPPORT
+#endif // HAS_MEDIA

@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -25,12 +25,10 @@
  * PRINTRBOARD_G2
  */
 
-#ifndef __SAM3X8E__
-  #error "Oops! Select 'Arduino Due' in 'Tools > Board.'"
-#endif
+#include "env_validate.h"
 
 #ifndef BOARD_INFO_NAME
-  #define BOARD_INFO_NAME "PRINTRBOARD_G2"
+  #define BOARD_INFO_NAME "Printrboard G2"
 #endif
 
 //
@@ -42,9 +40,9 @@
 //
 // Limit Switches
 //
-#define X_MIN_PIN                             22  // PB26
-#define Y_MAX_PIN                             18  // PA11
-#define Z_MIN_PIN                             19  // PA10
+#define X_STOP_PIN                            22  // PB26
+#define Y_STOP_PIN                            18  // PA11
+#define Z_STOP_PIN                            19  // PA10
 
 //
 // Z Probe (when not Z_MIN_PIN)
@@ -64,7 +62,7 @@
 // LED defines
 //
 //#define NEOPIXEL_TYPE                 NEO_GRBW  // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
-//#define NEOPIXEL_PIN                        20  // LED driving pin on motherboard
+//#define BOARD_NEOPIXEL_PIN                  20  // LED driving pin on motherboard
 //#define NEOPIXEL_PIXELS                      3  // Number of LEDs in the strip
 //#define SDA0                                20  // PB12 NeoPixel pin I2C data
 //#define SCL0                                21  // PB13              I2C clock
@@ -104,10 +102,6 @@
 #define E0_ENABLE_PIN                         37  // PB22
 
 // Microstepping mode pins
-#define Z_MS1_PIN                             52  // PB21 MODE0     MOTOR 1
-#define Z_MS2_PIN                             52  // PB21 MODE1
-#define Z_MS3_PIN                             65  // PB20 MODE2
-
 #define X_MS1_PIN                             43  // PA20 MODE0     MOTOR 2
 #define X_MS2_PIN                             43  // PA20 MODE1
 #define X_MS3_PIN                             42  // PA19 MODE2
@@ -115,6 +109,10 @@
 #define Y_MS1_PIN                             77  // PA28 MODE0     MOTOR 3
 #define Y_MS2_PIN                             77  // PA28 MODE1
 #define Y_MS3_PIN                             76  // PA27 MODE2
+
+#define Z_MS1_PIN                             52  // PB21 MODE0     MOTOR 1
+#define Z_MS2_PIN                             52  // PB21 MODE1
+#define Z_MS3_PIN                             65  // PB20 MODE2
 
 #define E0_MS1_PIN                            38  // PB11 MODE0     MOTOR 4
 #define E0_MS2_PIN                            38  // PB11 MODE1
@@ -140,21 +138,21 @@
 #define HEATER_0_PIN                          40  // PA5
 #define HEATER_BED_PIN                        41  // PB24
 
-#ifndef FAN_PIN
-  #define FAN_PIN                             13  //  PB27 Fan1A
+#ifndef FAN0_PIN
+  #define FAN0_PIN                            13  //  PB27 Fan1A
 #endif
 #define FAN1_PIN                              58  //  PA6  Fan1B
 
 #define FET_SAFETY_PIN                        31  // PA7  must be pulsed low every 50 mS or FETs are turned off
 #define FET_SAFETY_DELAY                      50  // 50 mS delay between pulses
-#define FET_SAFETY_INVERTED true                  // true - negative going pulse of 2 uS
+#define FET_SAFETY_INVERTED                 true  // true - negative going pulse of 2 uS
 
 /////////////////////////////////////////////////////////
 
-#define MISO_PIN                              68  // set to unused pins for now
-#define MOSI_PIN                              69  // set to unused pins for now
-#define SCK_PIN                               70  // set to unused pins for now
-#define SDSS                                  71  // set to unused pins for now
+#define SD_MISO_PIN                           68  // set to unused pins for now
+#define SD_MOSI_PIN                           69  // set to unused pins for now
+#define SD_SCK_PIN                            70  // set to unused pins for now
+#define SD_SS_PIN                             71  // set to unused pins for now
 
 /**
  * G2 uses 8 pins that are not available in the DUE environment:
@@ -170,5 +168,4 @@
  * None of these are in the arduino_due_x variant so digitalWrite and digitalRead can't be used on them.
  *
  * They can be accessed via FASTIO functions WRITE, READ, OUT_WRITE, OUTPUT, ...
- *
  */

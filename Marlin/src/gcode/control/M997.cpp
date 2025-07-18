@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -24,11 +24,19 @@
 
 #if ENABLED(PLATFORM_M997_SUPPORT)
 
+#if ENABLED(EXTENSIBLE_UI)
+  #include "../../lcd/extui/ui_api.h"
+#endif
+
 /**
  * M997: Perform in-application firmware update
  */
 void GcodeSuite::M997() {
+
+  TERN_(EXTENSIBLE_UI, ExtUI::onFirmwareFlash());
+
   flashFirmware(parser.intval('S'));
+
 }
 
 #endif

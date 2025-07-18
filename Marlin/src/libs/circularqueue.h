@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -51,7 +51,7 @@ class CircularQueue {
      *          of item this queue will handle and N defines the maximum number of
      *          items that can be stored on the queue.
      */
-    CircularQueue<T, N>() {
+    CircularQueue() {
       buffer.size = N;
       buffer.count = buffer.head = buffer.tail = 0;
     }

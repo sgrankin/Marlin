@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -25,20 +25,28 @@
  * Common pin assignments for all RUMBA32 boards
  */
 
-#ifndef STM32F4
-  #error "Oops! Select an STM32F4 board in 'Tools > Board.'"
-#elif HOTENDS > 3 || E_STEPPERS > 3
-  #error "RUMBA32 boards support up to 3 hotends / E-steppers."
+#include "env_validate.h"
+
+#if HOTENDS > 3 || E_STEPPERS > 3
+  #error "RUMBA32 boards support up to 3 hotends / E steppers."
 #endif
 
-#define RUMBA32_V1_0
 #define DEFAULT_MACHINE_NAME BOARD_INFO_NAME
 
-//#define I2C_EEPROM
-#ifdef E2END
-  #undef E2END
-#endif
-#define E2END 0xFFF                               // 4KB
+// Use soft PWM for fans - PWM is not working properly when paired with STM32 Arduino Core v1.7.0
+// This can be removed when Core version is updated and PWM behaviour is fixed.
+#define FAN_SOFT_PWM_REQUIRED
+
+//
+// Configure Timers
+// TIM6 is used for TONE
+// TIM7 is used for SERVO
+// TIMER_SERIAL defaults to TIM7 and must be overridden in the platformio.h file if SERVO will also be used.
+//              This will be difficult to solve from the Arduino IDE, without modifying the RUMBA32 variant
+//              included with the STM32 framework.
+
+#define STEP_TIMER 10
+#define TEMP_TIMER 14
 
 //
 // Limit Switches
@@ -83,6 +91,16 @@
 #define E2_ENABLE_PIN                       PD0
 #define E2_CS_PIN                           PD1
 
+#ifndef TMC_SPI_MOSI
+  #define TMC_SPI_MOSI                      PA7
+#endif
+#ifndef TMC_SPI_MISO
+  #define TMC_SPI_MISO                      PA6
+#endif
+#ifndef TMC_SPI_SCK
+  #define TMC_SPI_SCK                       PA5
+#endif
+
 //
 // Temperature Sensors
 //
@@ -100,50 +118,89 @@
 #define HEATER_2_PIN                        PC8
 #define HEATER_BED_PIN                      PA1
 
-#define FAN_PIN                             PC9
+#define FAN0_PIN                            PC9
 #define FAN1_PIN                            PA8
 
 //
-// I2C
+// SPI
 //
-#define SCK_PIN                             PA5
-#define MISO_PIN                            PA6
-#define MOSI_PIN                            PA7
+#define SD_SCK_PIN                          PA5
+#define SD_MISO_PIN                         PA6
+#define SD_MOSI_PIN                         PA7
 
 //
 // Misc. Functions
 //
 #define LED_PIN                             PB14
-#define BTN_PIN                             PC10
 #define PS_ON_PIN                           PE11
 #define KILL_PIN                            PC5
 
-#define SDSS                                PA2
+#define SD_SS_PIN                           PA2
 #define SD_DETECT_PIN                       PB0
 #define BEEPER_PIN                          PE8
+
+/**
+ *                ------                                    ------
+ * (BEEPER) ???? | 1  2 | PE7  (BTN_ENC)  (MISO)      ???? | 1  2 | ???? (SCK)
+ * (LCD_EN) PE9  | 3  4 | PE10 (LCD_RS)   (BTN_EN1)    PB2 | 3  4 | ???? (SD_SS)
+ * (LCD_D4) PE12 | 5  6   PE13 (LCD_D5)   (BTN_EN2)    PB1 | 5  6   ???? (MOSI)
+ * (LCD_D6) PE14 | 7  8 | PE15 (LCD_D7)   (SD_DETECT) ???? | 7  8 | RESET
+ *           GND | 9 10 | 5V                           GND | 9 10 | --
+ *                ------                                    ------
+ *                 EXP1                                      EXP2
+ */
+#define EXP1_01_PIN                         -1
+#define EXP1_02_PIN                         PE7   // ENC
+#define EXP1_03_PIN                         PE9
+#define EXP1_04_PIN                         PE10
+#define EXP1_05_PIN                         PE12
+#define EXP1_06_PIN                         PE13  // CS
+#define EXP1_07_PIN                         PE14  // A0
+#define EXP1_08_PIN                         PE15
+
+#define EXP2_01_PIN                         -1
+#define EXP2_02_PIN                         -1
+#define EXP2_03_PIN                         PB2   // EN1
+#define EXP2_04_PIN                         -1
+#define EXP2_05_PIN                         PB1   // EN2
+#define EXP2_06_PIN                         -1
+#define EXP2_07_PIN                         -1
+#define EXP2_08_PIN                         -1
 
 //
 // LCD / Controller
 //
-#if HAS_SPI_LCD
 
-  #define BTN_EN1                           PB2
-  #define BTN_EN2                           PB1
-  #define BTN_ENC                           PE7
+#if HAS_WIRED_LCD
 
-  #define LCD_PINS_RS                       PE10
-  #define LCD_PINS_ENABLE                   PE9
-  #define LCD_PINS_D4                       PE12
+  #define BTN_ENC                    EXP1_02_PIN
+  #define BTN_EN1                    EXP2_03_PIN
+  #define BTN_EN2                    EXP2_05_PIN
+
+  #define LCD_PINS_EN                EXP1_03_PIN
+  #define LCD_PINS_RS                EXP1_04_PIN
+  #define LCD_PINS_D4                EXP1_05_PIN
 
   #if ENABLED(MKS_MINI_12864)
-    #define DOGLCD_CS                       PE13
-    #define DOGLCD_A0                       PE14
+    #define DOGLCD_CS                EXP1_06_PIN
+    #define DOGLCD_A0                EXP1_07_PIN
   #endif
 
-  #if ENABLED(ULTIPANEL)
-    #define LCD_PINS_D5                     PE13
-    #define LCD_PINS_D6                     PE14
-    #define LCD_PINS_D7                     PE15
+  #if IS_ULTIPANEL
+    #define LCD_PINS_D5              EXP1_06_PIN
+    #define LCD_PINS_D6              EXP1_07_PIN
+    #define LCD_PINS_D7              EXP1_08_PIN
+
+    #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
+      #define BTN_ENC_EN             LCD_PINS_D7  // Detect the presence of the encoder
+    #endif
   #endif
 
+#endif // HAS_WIRED_LCD
+
+// Alter timing for graphical display
+#if IS_U8GLIB_ST7920
+  #define BOARD_ST7920_DELAY_1                96
+  #define BOARD_ST7920_DELAY_2                48
+  #define BOARD_ST7920_DELAY_3               640
 #endif

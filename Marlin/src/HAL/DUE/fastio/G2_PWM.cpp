@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -25,7 +25,7 @@
  * is NOT used to directly toggle pins. The ISR writes to the pin assigned to
  * that interrupt.
  *
- * All PWMs use the same repetition rate.  The G2 needs about 10KHz min in order to
+ * All PWMs use the same repetition rate.  The G2 needs about 10kHz min in order to
  * not have obvious ripple on the Vref signals.
  *
  * The data structures are setup to minimize the computation done by the ISR which
@@ -40,11 +40,12 @@
  * Some jitter in the Vref signal is OK so the interrupt priority is left at its default value.
  */
 
-#include "../../../inc/MarlinConfig.h"
+#include "../../../inc/MarlinConfigPre.h"
 
 #if MB(PRINTRBOARD_G2)
 
 #include "G2_PWM.h"
+#include "../../../module/stepper.h"
 
 #if PIN_EXISTS(MOTOR_CURRENT_PWM_X)
   #define G2_PWM_X 1
@@ -56,16 +57,12 @@
 #else
   #define G2_PWM_Y 0
 #endif
-#if PIN_EXISTS(MOTOR_CURRENT_PWM_Z)
+#if HAS_MOTOR_CURRENT_PWM_Z
   #define G2_PWM_Z 1
 #else
   #define G2_PWM_Z 0
 #endif
-#if PIN_EXISTS(MOTOR_CURRENT_PWM_E)
-  #define G2_PWM_E 1
-#else
-  #define G2_PWM_E 0
-#endif
+#define G2_PWM_E HAS_MOTOR_CURRENT_PWM_E
 #define G2_MASK_X(V) (G2_PWM_X * (V))
 #define G2_MASK_Y(V) (G2_PWM_Y * (V))
 #define G2_MASK_Z(V) (G2_PWM_Z * (V))
@@ -80,17 +77,22 @@ PWM_map ISR_table[NUM_PWMS] = PWM_MAP_INIT;
 
 void Stepper::digipot_init() {
 
-  #if PIN_EXISTS(MOTOR_CURRENT_PWM_X)
-    OUT_WRITE(MOTOR_CURRENT_PWM_X_PIN, 0);  // init pins
+  #if G2_PWM_X
+    OUT_WRITE(MOTOR_CURRENT_PWM_X_PIN, LOW);  // init pins
   #endif
-  #if PIN_EXISTS(MOTOR_CURRENT_PWM_Y)
-    OUT_WRITE(MOTOR_CURRENT_PWM_Y_PIN, 0);
+  #if G2_PWM_Y
+    OUT_WRITE(MOTOR_CURRENT_PWM_Y_PIN, LOW);
   #endif
   #if G2_PWM_Z
-    OUT_WRITE(MOTOR_CURRENT_PWM_Z_PIN, 0);
+    OUT_WRITE(MOTOR_CURRENT_PWM_Z_PIN, LOW);
   #endif
   #if G2_PWM_E
-    OUT_WRITE(MOTOR_CURRENT_PWM_E_PIN, 0);
+    #if PIN_EXISTS(MOTOR_CURRENT_PWM_E)
+      OUT_WRITE(MOTOR_CURRENT_PWM_E_PIN, LOW);
+    #endif
+    #if PIN_EXISTS(MOTOR_CURRENT_PWM_E0)
+      OUT_WRITE(MOTOR_CURRENT_PWM_E0_PIN, LOW);
+    #endif
   #endif
 
   #define WPKEY          (0x50574D << 8) // “PWM” in ASCII
@@ -154,7 +156,7 @@ void Stepper::digipot_init() {
   NVIC_SetPriority(PWM_IRQn, NVIC_EncodePriority(0, 10, 0));  // normal priority for PWM module (can stand some jitter on the Vref signals)
 }
 
-void Stepper::digipot_current(const uint8_t driver, const int16_t current) {
+void Stepper::set_digipot_current(const uint8_t driver, const int16_t current) {
 
   if (!(PWM->PWM_CH_NUM[0].PWM_CPRD == PWM_PERIOD_US)) digipot_init();  // Init PWM system if needed
 

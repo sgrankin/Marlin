@@ -16,7 +16,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -28,8 +28,6 @@
 #ifndef SWI_MAXIMUM_ALLOWED
 #define SWI_MAXIMUM_ALLOWED 4
 #endif
-
-
 
 #if defined(__arm__) || defined(ARDUINO_ARCH_PIC32)
 static char dyn_SWI_initied = 0;
@@ -79,7 +77,6 @@ void softISR() {
         // TO-DO: Perhaps limit to 8, and inline this?
         //
 
-
         // Make a working copy, while clearing the queue.
         noInterrupts();
 #ifdef ARDUINO_ARCH_PIC32
@@ -116,7 +113,6 @@ void softISR() {
 
 #define DDSB() __DSB()
 #endif
-
 
 #ifdef __arm__
 #ifndef interruptsStatus
@@ -165,7 +161,6 @@ static void Init_dyn_SWI() {
 }
 
 /**
- *
  * @param klass class that extends dyn_SWI
  * @return 0 on queue full, else returns queue position (ones based)
  */
@@ -219,7 +214,6 @@ static void Init_dyn_SWI() {
 }
 
 /**
- *
  * @param klass class that extends dyn_SWI
  * @return 0 on queue full, else returns queue position (ones based)
  */

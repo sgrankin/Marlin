@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -29,34 +29,52 @@
 
 /**
  * M412: Enable / Disable filament runout detection
+ *
+ * Parameters
+ *  R         : Reset the runout sensor
+ *  S<bool>   : Reset and enable/disable the runout sensor
+ *  H<bool>   : Enable/disable host handling of filament runout
+ *  D<linear> : Extra distance to continue after runout is triggered
  */
 void GcodeSuite::M412() {
   if (parser.seen("RS"
-    #ifdef FILAMENT_RUNOUT_DISTANCE_MM
-      "D"
-    #endif
-    #if ENABLED(HOST_ACTION_COMMANDS)
-      "H"
-    #endif
+    TERN_(HAS_FILAMENT_RUNOUT_DISTANCE, "D")
+    TERN_(HOST_ACTION_COMMANDS, "H")
   )) {
     #if ENABLED(HOST_ACTION_COMMANDS)
       if (parser.seen('H')) runout.host_handling = parser.value_bool();
     #endif
-    const bool seenR = parser.seen('R'), seenS = parser.seen('S');
+    const bool seenR = parser.seen_test('R'), seenS = parser.seen('S');
     if (seenR || seenS) runout.reset();
     if (seenS) runout.enabled = parser.value_bool();
-    #ifdef FILAMENT_RUNOUT_DISTANCE_MM
-      if (parser.seen('D')) runout.set_runout_distance(parser.value_linear_units());
+    #if HAS_FILAMENT_RUNOUT_DISTANCE
+      if (parser.seenval('D')) runout.set_runout_distance(parser.value_linear_units());
     #endif
   }
   else {
     SERIAL_ECHO_START();
-    SERIAL_ECHOPGM("Filament runout ");
-    serialprintln_onoff(runout.enabled);
-    #ifdef FILAMENT_RUNOUT_DISTANCE_MM
-      SERIAL_ECHOLNPAIR("Filament runout distance (mm): ", runout.runout_distance());
+    SERIAL_ECHOPGM("Filament runout ", ON_OFF(runout.enabled));
+    #if HAS_FILAMENT_RUNOUT_DISTANCE
+      SERIAL_ECHOPGM(" ; Distance ", runout.runout_distance(), "mm");
     #endif
+    #if ENABLED(HOST_ACTION_COMMANDS)
+      SERIAL_ECHOPGM(" ; Host handling ", ON_OFF(runout.host_handling));
+    #endif
+    SERIAL_EOL();
   }
+}
+
+void GcodeSuite::M412_report(const bool forReplay/*=true*/) {
+  TERN_(MARLIN_SMALL_BUILD, return);
+
+  report_heading_etc(forReplay, F(STR_FILAMENT_RUNOUT_SENSOR));
+  SERIAL_ECHOLNPGM(
+    "  M412 S", runout.enabled
+    #if HAS_FILAMENT_RUNOUT_DISTANCE
+      , " D", LINEAR_UNIT(runout.runout_distance())
+    #endif
+    , " ; Sensor ", ON_OFF(runout.enabled)
+  );
 }
 
 #endif // HAS_FILAMENT_SENSOR
